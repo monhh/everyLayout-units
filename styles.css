@@ -1,0 +1,268 @@
+/* @layer reset, variables, typography, base, layouts, components, utilities; */
+
+/* debug ------------------ */
+/* *, *::before, *::after {
+    outline: solid lime;
+    outline-offset: -2px; 
+    background: pink;
+}
+*/
+
+
+@layer reset {
+    
+    /* https://piccalil.li/blog/a-more-modern-css-reset/ */
+    /* https://github.com/monhh/fullWebProCSS/blob/main/style.css */
+
+
+    /* Andy */
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
+
+    
+    /* Andy: Prevent font size inflation */
+    html {
+        -moz-text-size-adjust: none;
+        -webkit-text-size-adjust: none;
+        text-size-adjust: none;
+    }
+
+
+    /* Andy vs Kevin: Remove default margin */
+    body, h1, h2, h3, h4, p, figure, blockquote, dl, dd {
+        /* margin-block-end: 0;  */ /* Andy */
+        margin: 0; /* Kevin Powell */
+    }
+    
+
+    /* Remove list styles on ul, ol elements
+         Safari removes list semantics of lists that don’t look like lists (list-style: none). 
+         Scott O’Hara provided a fix in “Fixing” Lists, where he suggests setting role="list" explicitly on the list to re-add list semantics
+    */
+    /* Andy Bell: Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */
+    ul[role='list'],
+    ol[role='list'] {
+        list-style: none;
+    } 
+    /* Kevin Powell. https://www.scottohara.me/blog/2019/01/12/lists-and-safari.html */
+    /*  [role="list"] {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+    } */
+
+
+    /* Andy: Set core body defaults */
+    body {
+        min-height: 100vh; /* Andy Bell */
+        /* min-block-size: 100vh; */ /* Kevin Powell */
+        line-height: 1.5; /* both  */
+    }
+
+    /* Andy Bell: Set shorter line heights on headings and interactive elements */ 
+    h1, h2, h3, h4, button, input, label {
+        line-height: 1.1;
+    } 
+    /* Kevin Powell */
+    /* h1, h2, h3, button, input, label {
+        line-height: 1.1;
+    }  */
+
+
+    /* Andy: Balance text wrapping on headings */
+    h1, h2, h3, h4 {
+        text-wrap: balance;
+    }
+    
+    /* Kevin Powell */
+    p, li {
+        text-wrap: pretty;
+    }
+
+
+    /* Andy Bell: A elements that don't have a class get default styles */
+    a:not([class]) {
+        text-decoration-skip-ink: auto;
+        color: currentColor;
+     }
+
+
+    /* Andy Bell: Make images easier to work with */
+    img, picture {
+        max-width: 100%;
+        display: block;
+    } 
+    /* Kevin Powell */
+    /* img, picture {
+        max-inline-size: 100%;
+        display: block;
+    } */
+
+
+    /* Andy Bell: Inherit fonts for inputs and buttons */
+    input, button, textarea, select {
+        font-family: inherit;
+        font-size: inherit;
+    } 
+    /* Kevin Powell */
+    /* input, button, textarea, select {
+        font: inherit;
+    } */
+
+
+    /* Andy Bell: Make sure textareas without a rows attribute are not tiny */
+    textarea:not([rows]) {
+        min-height: 10em;
+    } 
+   
+
+    /* Andy Bell: Anything that has been anchored to should have extra scroll margin */
+    /* For example, if a user clicks a "Skip to main content" link, the browser will scroll to the #main element. 
+        The scroll-margin-block ensures that the #main element does not appear too close to the top of the viewport */
+    :target {
+        scroll-margin-block: 5ex;
+    }
+   
+
+}
+
+
+@layer variables {
+
+    :root {
+
+        /* Every Layout book ---------------------------------------------------- */
+        /* measure -------------------------------------------------------- */
+        --measure: 60ch; /* 60 characters per line */ 
+
+
+        /* algorithm: escala proporcionalmente,a partir de un valor mínimo */
+        font-size: calc(1rem + 0.5vw); 
+
+
+        /* algorithm Modular scale (¿space (for gutter, gap, margin))? */
+        --ratio: 1.618; /* Golden ratio */
+        --s-5: calc(var(--s-4) / var(--ratio)); /* 0.090rem */
+        --s-4: calc(var(--s-3) / var(--ratio)); /* 0.146rem */
+        --s-3: calc(var(--s-2) / var(--ratio)); /* 0.236rem */
+        --s-2: calc(var(--s-1) / var(--ratio)); /* 0.382rem */
+        --s-1: calc(var(--s0) / var(--ratio)); /* 0.618rem */
+        --s0: 1rem; /* Base size */
+        --s1: calc(var(--s0) * var(--ratio)); /* 1.618rem */
+        --s2: calc(var(--s1) * var(--ratio)); /* 3.236rem */
+        --s3: calc(var(--s2) * var(--ratio)); /* 5.235 */
+        --s4: calc(var(--s3) * var(--ratio)); /* 8.471 */
+        --s5: calc(var(--s4) * var(--ratio)); /* 13.707 */
+
+
+        /* Andy web https://every-layout.dev/ ------------------------------------------ */
+        --s-5: clamp(0.33rem, 0.39rem + -0.29vw, 0.18rem);
+        --s-4: clamp(0.41rem, 0.47rem + -0.31vw, 0.25rem);
+        --s-3: clamp(0.51rem, 0.57rem + -0.31vw, 0.35rem);
+        --s-2: clamp(0.64rem, 0.69rem + -0.27vw, 0.5rem);
+        --s-1: clamp(0.8rem, 0.84rem + -0.18vw, 0.71rem);
+        --s0: clamp(1rem, 1rem + 0vw, 1rem);
+        --s1: clamp(1.25rem, 1.19rem + 0.32vw, 1.41rem);
+        --s2: clamp(1.56rem, 1.39rem + 0.85vw, 2rem);
+        --s3: clamp(1.95rem, 1.61rem + 1.7vw, 2.83rem);
+        --s4: clamp(2.44rem, 1.83rem + 3.04vw, 4rem);
+        --s5: clamp(3.05rem, 2.04rem + 5.07vw, 5.65rem);
+
+
+        /* Andy from https://set.studio/: 
+
+        space (for gutter, gap, margin) ------------------------------------------------------- */
+        /* define a range; minimum, scaling factor (+vw(1vw=1%))for dynamic adjustment, maximum */
+        --space-3xs: clamp(.3125rem, .2483rem + .321vw, .5625rem);
+        --space-2xs: clamp(.5625rem, .418rem + .7223vw, 1.125rem);
+        --space-xs: clamp(.875rem, .6663rem + 1.0433vw, 1.6875rem);
+        --space-s: clamp(1.125rem, .8361rem + 1.4446vw, 2.25rem);
+        --space-m: clamp(1.6875rem, 1.2541rem + 2.1669vw, 3.375rem);
+        --space-l: clamp(2.25rem, 1.6722rem + 2.8892vw, 4.5rem);
+        --space-xl: clamp(3.375rem, 2.5082rem + 4.3339vw, 6.75rem);
+        --space-2xl: clamp(4.5rem, 3.3443rem + 5.7785vw, 9rem);
+        --space-3xl: clamp(6.75rem, 5.0165rem + 8.6677vw, 13.5rem);
+        --space-3xs-2xs: clamp(.3125rem, .1038rem + 1.0433vw, 1.125rem);
+        --space-2xs-xs: clamp(.5625rem, .2736rem + 1.4446vw, 1.6875rem);
+        --space-xs-s: clamp(.875rem, .5219rem + 1.7657vw, 2.25rem);
+        --space-s-m: clamp(1.125rem, .5472rem + 2.8892vw, 3.375rem);
+        --space-m-l: clamp(1.6875rem, .9652rem + 3.6116vw, 4.5rem);
+        --space-l-xl: clamp(2.25rem, 1.0943rem + 5.7785vw, 6.75rem);
+        --space-xl-2xl: clamp(3.375rem, 1.9304rem + 7.2231vw, 9rem);
+        --space-2xl-3xl: clamp(4.5rem, 2.1886rem + 11.557vw, 13.5rem);
+        --space-s-l: clamp(1.125rem, .2582rem + 4.3339vw, 4.5rem);
+
+        /* size-step (for font-size) ---------------------------------- */
+        --size-step--3: clamp(.875rem, .8462rem + .1439vw, 1rem);
+        --size-step--2: clamp(1rem, .9712rem + .1439vw, 1.125rem);
+        --size-step--1: clamp(1.125rem, 1.0818rem + .2158vw, 1.3125rem);
+        --size-step-0: clamp(1.25rem, 1.1349rem + .5755vw, 1.75rem);
+        --size-step-1: clamp(1.5rem, 1.3273rem + .8633vw, 2.25rem);
+        --size-step-2: clamp(1.75rem, 1.5773rem + .8633vw, 2.5rem);
+        --size-step-3: clamp(2rem, 1.7698rem + 1.1511vw, 3rem);
+        --size-step-4: clamp(2.25rem, 1.7176rem + 2.6619vw, 4.5625rem);
+        --size-step-5: clamp(2.625rem, 1.6754rem + 4.7482vw, 6.75rem);
+        --size-step-6: clamp(3rem, .0504rem + 14.7482vw, 15.8125rem);
+        --size-step-7: clamp(3.8125rem, .0427rem + 18.8489vw, 20.1875rem);
+
+        /* https://utopia.fyi/ */
+
+    }
+}
+
+/* units rem vs em */
+@layer typography {
+
+    h2 {
+        font-size: 2rem; /* rem units are better for block elements */
+    }
+    h2 strong {
+        font-size: 0.5em; /* em units are better for sizing inline elements */
+    }
+}
+
+/* units: measure */
+@layer base {
+
+    /* measure Exception-based styling ---------------- */
+    * {
+        max-inline-size: var(--measure);
+    }
+    html, body, div, header, nav, main, footer {
+        max-inline-size: none;
+    }
+}
+
+
+@layer layouts {
+
+    /* Center: a component that can create a horizontally centered column. 
+        Podríamos crear una "franja" centrada de contenido dentro de cualquier contenedor, 
+        limitando su anchura para conservar una medida razonable.
+    */
+    .center {
+        /* ↓ Remove padding from the width calculation */
+        box-sizing: content-box;
+        /* ↓ The maximum width is the maximum measure */
+        max-inline-size: 60ch;
+        /* ↓ Only affect horizontal margins */
+        margin-inline: auto;
+        /* ↓ Apply the minimum horizontal space */
+        padding-inline-start: var(--s1);
+        padding-inline-end: var(--s1);
+
+        /* no pertenece a Center Layot: */
+        /* border: var(--s-5) solid; */
+        outline: solid;
+        outline-offset: -var(--s-5) ; 
+        text-align: center;
+        margin-block-start: var(--s-1);;
+    }
+
+}
+
+body {
+    background-color: black;
+    color: white;
+}
